@@ -29,6 +29,7 @@ interface GitHubStats {
   };
   languages: { name: string; percentage: number; bytes: number }[];
   commitHours: number[];
+  eventCount: number;
 }
 
 interface LeetCodeStats {

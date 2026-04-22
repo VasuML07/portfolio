@@ -39,6 +39,7 @@ async function fetchGitHubStats() {
   const reposData: Array<{
     language: string | null;
     stargazers_count: number;
+    forks_count: number;
     fork: boolean;
     size: number;
   }> = reposRes.ok ? await reposRes.json() : [];
@@ -52,7 +53,7 @@ async function fetchGitHubStats() {
     .filter((repo) => !repo.fork)
     .forEach((repo) => {
       totalStars += repo.stargazers_count;
-      totalForks += repo.fork;
+      totalForks += repo.forks_count;
       if (repo.language) {
         languageBytes[repo.language] =
           (languageBytes[repo.language] || 0) + repo.size;
