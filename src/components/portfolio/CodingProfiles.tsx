@@ -4,22 +4,13 @@ import { useEffect, useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   Github,
-  Code,
-  Swords,
-  Award,
-  BookOpen,
-  BarChart3,
   ExternalLink,
   Star,
   GitFork,
   Users,
+  Code,
   Loader2,
 } from "lucide-react";
-import { portfolioData } from "@/data/portfolio";
-
-const platformIcons: Record<string, React.ComponentType<{ size?: number; strokeWidth?: number }>> = {
-  Github, Code, Swords, Award, BookOpen, BarChart3,
-};
 
 interface GitHubData {
   user: { login: string; public_repos: number; followers: number; following: number; total_stars: number; total_forks: number; created_at: string };
@@ -109,31 +100,8 @@ export default function CodingProfiles() {
           <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">Activity</p>
           <h2 className="text-2xl font-medium tracking-tight sm:text-3xl">Coding profiles</h2>
           <p className="mt-3 max-w-md text-sm leading-relaxed text-muted-foreground">
-            Live data from competitive programming platforms and GitHub. All numbers are real and fetched directly from each platform&apos;s API.
+            Live data fetched directly from GitHub and LeetCode APIs. All numbers are real.
           </p>
-        </motion.div>
-
-        <motion.div
-          className="mb-10 grid grid-cols-2 gap-2 sm:grid-cols-3"
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          {portfolioData.codingPlatforms.map((p) => {
-            const Icon = platformIcons[p.icon] || Code;
-            return (
-              <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer"
-                className="group flex items-center gap-3 rounded-lg border border-border p-3 transition-colors hover:border-muted-foreground/20">
-                <Icon size={16} strokeWidth={1.5} className="text-muted-foreground/60 transition-colors group-hover:text-foreground" />
-                <div className="min-w-0">
-                  <p className="text-[13px] font-medium">{p.name}</p>
-                  <p className="truncate font-mono text-[11px] text-muted-foreground/60">{p.username}</p>
-                </div>
-                <ExternalLink size={12} strokeWidth={1.5} className="ml-auto shrink-0 text-muted-foreground/30 transition-colors group-hover:text-muted-foreground/60" />
-              </a>
-            );
-          })}
         </motion.div>
 
         {loading && (
