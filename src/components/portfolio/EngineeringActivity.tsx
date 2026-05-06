@@ -435,20 +435,11 @@ export default function EngineeringActivity() {
               </div>
 
               {/* Stats grid */}
-              <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <div className="mb-6 grid grid-cols-3 gap-3 sm:grid-cols-3">
                 <StatCard
                   label="Solved"
                   value={
                     <StatNumber value={lc.problemsSolved.total} />
-                  }
-                />
-                <StatCard
-                  label="Acceptance"
-                  value={
-                    <StatNumber
-                      value={lc.acceptanceRate}
-                      suffix="%"
-                    />
                   }
                 />
                 <StatCard

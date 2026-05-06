@@ -97,7 +97,6 @@ export default function Nav() {
                   : "text-muted-foreground hover:text-foreground/70"
               }`}
             >
-              {s.label}
               {active === s.id && (
                 <motion.span
                   layoutId="nav-indicator"
