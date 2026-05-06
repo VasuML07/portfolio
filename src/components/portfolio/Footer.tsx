@@ -1,17 +1,12 @@
-"use client";
-
 export default function Footer() {
   return (
-    <footer className="mt-auto">
-      {/* Gradient divider */}
-      <div className="h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-
-      <div className="py-6 px-4 text-center space-y-1.5">
-        <p className="font-mono text-xs text-muted-foreground">
-          Built with Next.js, Tailwind CSS &amp; Framer Motion
+    <footer className="border-t border-border px-6 py-8">
+      <div className="mx-auto flex max-w-3xl flex-col items-center justify-between gap-2 sm:flex-row">
+        <p className="text-xs text-muted-foreground/50">
+          &copy; {new Date().getFullYear()} Vasu Margana
         </p>
-        <p className="font-mono text-xs text-muted-foreground/70">
-          © 2025 Vasu Margana. All rights reserved.
+        <p className="text-xs text-muted-foreground/30">
+          Built with Next.js, Tailwind CSS, and Framer Motion
         </p>
       </div>
     </footer>
