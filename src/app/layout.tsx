@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/portfolio/ThemeProvider";
@@ -16,14 +16,28 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Vasu Margana — ML Engineer & Software Developer",
   description:
-    "Undergraduate at VIT-AP University working on machine learning, NLP, and full-stack development.",
-  authors: [{ name: "Vasu Margana" }],
+    "Undergraduate at VIT-AP University working on machine learning, NLP, and full-stack development. Building systems from first principles.",
+  authors: [{ name: "Vasu Margana", url: "https://github.com/VasuML07" }],
   openGraph: {
     title: "Vasu Margana",
     description:
       "ML Engineer & Software Developer. Building machine learning systems and interactive web experiences.",
     type: "website",
+    url: "https://vasu-margana.vercel.app",
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
+  ],
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -39,7 +53,7 @@ export default function RootLayout({
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
-          enableSystem={false}
+          enableSystem
           disableTransitionOnChange
         >
           {children}

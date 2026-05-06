@@ -4,95 +4,92 @@ import { motion } from "framer-motion";
 import { portfolioData } from "@/data/portfolio";
 import { Mail, Github, Linkedin, FileText, ArrowUpRight } from "lucide-react";
 
-export default function Contact() {
-  const { email, github, linkedin, resumeUrl } = portfolioData;
+const ease = [0.25, 0.1, 0.25, 1] as const;
 
+const links = [
+  {
+    icon: Mail,
+    label: "Email",
+    href: `mailto:${portfolioData.email}`,
+    detail: portfolioData.email,
+  },
+  {
+    icon: Github,
+    label: "GitHub",
+    href: portfolioData.github,
+    detail: "github.com/VasuML07",
+  },
+  {
+    icon: Linkedin,
+    label: "LinkedIn",
+    href: portfolioData.linkedin,
+    detail: "linkedin.com/in/vasu-margana",
+  },
+  {
+    icon: FileText,
+    label: "Resume",
+    href: portfolioData.resumeUrl,
+    detail: "Google Drive PDF",
+  },
+];
+
+export default function Contact() {
   return (
-    <section id="contact" className="px-6 py-28 sm:py-32">
-      <div className="mx-auto max-w-2xl">
+    <section id="contact" className="px-6 py-32 sm:py-40">
+      <div className="mx-auto max-w-3xl">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5 }}
-          className="mb-10"
+          transition={{ duration: 0.5, ease }}
+          className="mb-12"
         >
-          <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+          <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground/60">
             Contact
           </p>
-          <h2 className="text-2xl font-medium tracking-tight sm:text-3xl">
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             Get in touch
           </h2>
+          <p className="mt-4 max-w-md text-[15px] leading-relaxed text-muted-foreground">
+            Open to internships, research collaborations, or interesting
+            conversations about ML and engineering.
+          </p>
         </motion.div>
 
-        <motion.p
-          className="mb-10 max-w-md text-sm leading-relaxed text-muted-foreground"
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          Open to internships, research collaborations, or interesting conversations about ML and engineering. The fastest way to reach me is email.
-        </motion.p>
-
-        <motion.div
-          className="space-y-2"
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.15 }}
-        >
-          <a
-            href={`mailto:${email}`}
-            className="group flex items-center gap-3 rounded-lg border border-border p-4 transition-colors hover:border-muted-foreground/20"
-          >
-            <Mail size={16} strokeWidth={1.5} className="text-muted-foreground/60" />
-            <div className="min-w-0 flex-1">
-              <p className="text-sm">Email</p>
-              <p className="truncate font-mono text-xs text-muted-foreground">{email}</p>
-            </div>
-            <ArrowUpRight size={14} strokeWidth={1.5} className="shrink-0 text-muted-foreground/30 transition-colors group-hover:text-muted-foreground" />
-          </a>
-          <a
-            href={github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-3 rounded-lg border border-border p-4 transition-colors hover:border-muted-foreground/20"
-          >
-            <Github size={16} strokeWidth={1.5} className="text-muted-foreground/60" />
-            <div className="min-w-0 flex-1">
-              <p className="text-sm">GitHub</p>
-              <p className="truncate font-mono text-xs text-muted-foreground">github.com/VasuML07</p>
-            </div>
-            <ArrowUpRight size={14} strokeWidth={1.5} className="shrink-0 text-muted-foreground/30 transition-colors group-hover:text-muted-foreground" />
-          </a>
-          <a
-            href={linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-3 rounded-lg border border-border p-4 transition-colors hover:border-muted-foreground/20"
-          >
-            <Linkedin size={16} strokeWidth={1.5} className="text-muted-foreground/60" />
-            <div className="min-w-0 flex-1">
-              <p className="text-sm">LinkedIn</p>
-              <p className="truncate font-mono text-xs text-muted-foreground">linkedin.com/in/vasu-margana</p>
-            </div>
-            <ArrowUpRight size={14} strokeWidth={1.5} className="shrink-0 text-muted-foreground/30 transition-colors group-hover:text-muted-foreground" />
-          </a>
-          <a
-            href={resumeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-3 rounded-lg border border-border p-4 transition-colors hover:border-muted-foreground/20"
-          >
-            <FileText size={16} strokeWidth={1.5} className="text-muted-foreground/60" />
-            <div className="min-w-0 flex-1">
-              <p className="text-sm">Resume</p>
-              <p className="text-xs text-muted-foreground">Google Drive PDF</p>
-            </div>
-            <ArrowUpRight size={14} strokeWidth={1.5} className="shrink-0 text-muted-foreground/30 transition-colors group-hover:text-muted-foreground" />
-          </a>
-        </motion.div>
+        <div className="space-y-2">
+          {links.map((link, i) => (
+            <motion.a
+              key={link.label}
+              href={link.href}
+              target={link.label !== "Email" ? "_blank" : undefined}
+              rel={
+                link.label !== "Email"
+                  ? "noopener noreferrer"
+                  : undefined
+              }
+              className="group flex items-center gap-4 rounded-xl border border-border/40 bg-card/20 p-4 transition-all hover:border-border/70 hover:bg-card/40"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.06, ease }}
+            >
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary/50 text-muted-foreground/50 transition-colors group-hover:text-foreground/70">
+                <link.icon size={16} strokeWidth={1.5} />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-[14px] font-medium">{link.label}</p>
+                <p className="truncate font-mono text-[12px] text-muted-foreground/50">
+                  {link.detail}
+                </p>
+              </div>
+              <ArrowUpRight
+                size={14}
+                strokeWidth={1.5}
+                className="shrink-0 text-muted-foreground/20 transition-colors group-hover:text-muted-foreground/50"
+              />
+            </motion.a>
+          ))}
+        </div>
       </div>
     </section>
   );

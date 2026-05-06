@@ -2,10 +2,10 @@
 
 import Nav from "@/components/portfolio/Nav";
 import Hero from "@/components/portfolio/Hero";
-import About from "@/components/portfolio/About";
 import Projects from "@/components/portfolio/Projects";
 import Skills from "@/components/portfolio/Skills";
-import CodingProfiles from "@/components/portfolio/CodingProfiles";
+import EngineeringActivity from "@/components/portfolio/EngineeringActivity";
+import About from "@/components/portfolio/About";
 import Contact from "@/components/portfolio/Contact";
 import Footer from "@/components/portfolio/Footer";
 
@@ -13,12 +13,12 @@ export default function Home() {
   return (
     <>
       <Nav />
-      <main>
+      <main className="min-h-screen">
         <Hero />
-        <About />
         <Projects />
         <Skills />
-        <CodingProfiles />
+        <EngineeringActivity />
+        <About />
         <Contact />
       </main>
       <Footer />

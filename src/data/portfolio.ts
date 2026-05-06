@@ -10,9 +10,9 @@ export const portfolioData = {
   leetcodeUsername: "coder_2028",
 
   hero: {
-    headline: "I build machine learning systems\nand interactive web experiences.",
+    headline: ["I build machine learning systems", "and interactive web experiences."],
     sub: "Undergraduate at VIT-AP University, specializing in AI/ML. I work across deep learning, NLP, and full-stack development — with a preference for understanding things from the ground up.",
-    status: "Open to internships",
+    status: "Open to internships and AI engineering opportunities",
   },
 
   about: [
@@ -33,90 +33,81 @@ export const portfolioData = {
       id: "neural-networks",
       title: "Neural Networks from Scratch",
       summary:
-        "Built a modular neural network library using only Python and NumPy — no ML frameworks. Implements dense layers, activation functions, backpropagation, and optimizers from first principles.",
+        "A modular neural network library built with only Python and NumPy — zero ML frameworks. Implements dense layers, activation functions, backpropagation, and optimizers from first principles.",
       repo: "https://github.com/VasuML07/NeuralNetworkfromscratch",
       live: null,
       stack: ["Python", "NumPy", "Matplotlib"],
       writeup: {
-        why:
-          "ML frameworks hide too much. I wanted to see the actual matrix math — how gradients flow, how parameters update, where numerical instability creeps in. The only way to truly get that is to write it yourself.",
+        problem:
+          "ML frameworks abstract away too much of what's actually happening during training. Without understanding the underlying mechanics — gradient flow, parameter updates, numerical stability — you can't debug models effectively when things go wrong.",
         architecture:
-          "Each component is a standalone class: Dense layer, activation functions (ReLU, Sigmoid, Softmax), loss functions (MSE, CrossEntropy), and optimizers (SGD, Adam). The Network class orchestrates forward pass, loss computation, and backpropagation through the computational graph.",
+          "Each component is a standalone class: Dense layers, activation functions (ReLU, Sigmoid, Softmax), loss functions (MSE, CrossEntropy), and optimizers (SGD, Adam). The Network class orchestrates forward pass, loss computation, and backpropagation through the computational graph.",
         challenges:
-          "The hardest part was getting backpropagation right for arbitrary network topologies. Shape mismatches between layers, numerical underflow in softmax, and getting Adam's bias correction to actually converge — each required careful debugging.",
+          "Getting backpropagation right for arbitrary topologies was the hardest part. Shape mismatches between layers, numerical underflow in softmax with large inputs, and getting Adam's bias correction to converge — each required careful debugging with intermediate value checks.",
         tradeoffs:
-          "Pure NumPy is orders of magnitude slower than PyTorch, but every operation is visible and debuggable. For learning purposes, that transparency is worth more than speed.",
+          "Pure NumPy is orders of magnitude slower than PyTorch, but every operation is visible and debuggable. For understanding the mechanics, that transparency is worth more than speed. This wasn't built for production — it was built for comprehension.",
+        deployment: null,
       },
     },
     {
       id: "fake-job-prediction",
       title: "Fake Job Prediction System",
       summary:
-        "NLP pipeline for classifying fraudulent job postings. Uses TF-IDF vectorization with scikit-learn classifiers, deployed as an interactive Streamlit application.",
+        "NLP pipeline for classifying fraudulent job postings using TF-IDF vectorization with scikit-learn classifiers. Deployed as an interactive Streamlit application with real-time prediction.",
       repo: "https://github.com/VasuML07/fakeprediction",
       live: "https://fakeprediction-a8wpvpp3uifhwxeduehaev.streamlit.app/",
       stack: ["Python", "scikit-learn", "Streamlit", "NLTK", "Pandas"],
       writeup: {
-        why:
-          "Job scams are a real problem, especially on aggregator sites. I wanted to see how far classical NLP methods could go on this task before reaching for transformers.",
+        problem:
+          "Job scams are a real problem on aggregator sites, and I wanted to see how far classical NLP methods could go on this classification task before reaching for transformer-based approaches.",
         architecture:
-          "Text preprocessing pipeline (cleaning, tokenization, stopword removal) feeds into TF-IDF vectorization. The resulting sparse matrix is classified using scikit-learn — compared multiple classifiers and settled on the best performing one via GridSearchCV.",
+          "A text preprocessing pipeline (cleaning, tokenization, stopword removal) feeds into TF-IDF vectorization. The resulting sparse matrix is classified using scikit-learn — I compared multiple classifiers (Logistic Regression, SVM, Random Forest, Naive Bayes) and selected the best performer via GridSearchCV with stratified cross-validation.",
         challenges:
-          "Class imbalance in the training data was the main issue. Fraudulent postings are a minority. I tried SMOTE, class weights, and different threshold strategies before finding a good precision-recall balance.",
+          "Class imbalance was the main issue. Fraudulent postings are a minority in the dataset. I experimented with SMOTE oversampling, class weights, and different classification thresholds before finding a good precision-recall balance that minimized false negatives.",
         tradeoffs:
-          "TF-IDF over transformers because it runs anywhere, needs no GPU, and inference is instant. For structured text like job postings, it performs competitively with much simpler infrastructure.",
+          "TF-IDF over transformers because it runs anywhere, needs no GPU, and inference is instant. For structured text like job postings — which follow fairly predictable patterns — classical methods perform competitively with significantly simpler infrastructure.",
+        deployment:
+          "Deployed on Streamlit Community Cloud as an interactive web application where users can paste job descriptions and get real-time fraud predictions with confidence scores.",
       },
     },
     {
       id: "breast-cancer",
       title: "Breast Cancer Classification",
       summary:
-        "Neural network classifier for tumor diagnosis using the Wisconsin dataset. Explored feature importance, cross-validation strategies, and model interpretability in a healthcare context.",
+        "Neural network classifier for tumor diagnosis using the Wisconsin Diagnostic Dataset. Explored feature importance, cross-validation strategies, and model interpretability.",
       repo: "https://github.com/VasuML07/Breast-Cancer-Classification-using-neural-network",
       live: null,
       stack: ["Python", "scikit-learn", "NumPy", "Pandas"],
       writeup: {
-        why:
-          "Healthcare applications are where ML can have the most direct impact. I wanted to work with real medical data and understand the additional constraints that come with it — small datasets, high stakes, need for interpretability.",
+        problem:
+          "Healthcare is where ML can have the most direct, measurable impact. I wanted to work with real clinical data and understand the additional constraints: small datasets, high stakes, and the critical need for interpretability over marginal accuracy gains.",
         architecture:
-          "Feedforward network built on scikit-learn's MLPClassifier. Input is the Wisconsin dataset's 30 extracted features (radius, texture, perimeter, etc.). Explored different architectures, learning rates, and regularization strategies.",
+          "Feedforward network built on scikit-learn's MLPClassifier. Input is the Wisconsin dataset's 30 extracted features (radius, texture, perimeter, smoothness, etc.). I explored different architectures, learning rates, hidden layer sizes, and regularization strategies systematically.",
         challenges:
-          "With only ~570 samples, overfitting is the primary concern. Extensive use of stratified k-fold cross-validation, early stopping, and L2 regularization. Also had to be careful about data leakage during preprocessing.",
+          "With only ~570 samples, overfitting is the primary concern. I used stratified k-fold cross-validation throughout, along with early stopping and L2 regularization. Data leakage during preprocessing was another concern — all scaling and feature selection was done within cross-validation folds only.",
         tradeoffs:
-          "Kept the architecture simple deliberately. For tabular data with this sample size, a well-tuned shallow network outperforms deeper ones. Interpretability matters more than marginal accuracy gains in medical contexts.",
+          "I kept the architecture deliberately simple. For tabular data with this sample size, a well-tuned shallow network consistently outperformed deeper configurations. In medical contexts, interpretability and reliability matter far more than squeezing out an extra percentage point of accuracy.",
+        deployment: null,
       },
     },
   ],
 
   skills: [
     {
-      category: "ML / AI",
-      items: [
-        "Deep Learning",
-        "Neural Networks",
-        "NLP",
-        "scikit-learn",
-        "TensorFlow / Keras",
-        "Backpropagation",
-      ],
+      category: "AI / Machine Learning",
+      items: ["Deep Learning", "Neural Networks", "NLP", "scikit-learn", "TensorFlow / Keras", "Backpropagation"],
     },
     {
       category: "Languages",
-      items: ["Python", "C++", "SQL", "TypeScript", "NumPy"],
+      items: ["Python", "TypeScript", "C++", "SQL"],
     },
     {
-      category: "Web & Tools",
-      items: ["Next.js", "React", "Streamlit", "Git", "Tailwind CSS", "Framer Motion"],
+      category: "Web Development",
+      items: ["Next.js", "React", "Tailwind CSS", "Framer Motion", "Streamlit", "REST APIs"],
     },
     {
-      category: "Foundations",
-      items: [
-        "Data Structures",
-        "Algorithms",
-        "Linear Algebra",
-        "Probability & Statistics",
-        "System Design",
-      ],
+      category: "Data & Tools",
+      items: ["NumPy", "Pandas", "Matplotlib", "Git", "Jupyter", "Linux"],
     },
   ],
 
@@ -129,9 +120,9 @@ export const portfolioData = {
     },
     {
       year: "2024",
-      title: "Built Neural Networks from Scratch",
+      title: "Neural Networks from Scratch",
       description:
-        "Wrote a neural network library in pure NumPy to understand backpropagation at the implementation level.",
+        "Wrote a neural network library in pure NumPy to understand backpropagation at the implementation level — no ML frameworks.",
     },
     {
       year: "2024",
@@ -147,9 +138,9 @@ export const portfolioData = {
     },
     {
       year: "2025",
-      title: "Deepened Focus on Systems & CP",
+      title: "Deeper into Systems & Competitive Programming",
       description:
-        "Started solving problems more seriously on LeetCode and Codeforces. Began exploring distributed systems and more advanced ML topics.",
+        "LeetCode and Codeforces more seriously. Started exploring distributed systems and advanced ML topics.",
     },
   ],
 };

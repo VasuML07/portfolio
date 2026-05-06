@@ -3,7 +3,10 @@ import { NextResponse } from "next/server";
 const GITHUB_USERNAME = "VasuML07";
 const CACHE_DURATION = 10 * 60 * 1000;
 
-let cachedData: { data: Record<string, unknown> | null; timestamp: number } = { data: null, timestamp: 0 };
+let cachedData: { data: Record<string, unknown> | null; timestamp: number } = {
+  data: null,
+  timestamp: 0,
+};
 
 async function fetchGitHubStats() {
   const now = Date.now();
@@ -11,36 +14,86 @@ async function fetchGitHubStats() {
     return cachedData.data;
   }
 
-  const headers: HeadersInit = { Accept: "application/vnd.github.v3+json" };
+  const headers: HeadersInit = {
+    Accept: "application/vnd.github.v3+json",
+  };
 
-  const userRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`, { headers, next: { revalidate: 600 } });
+  const userRes = await fetch(
+    `https://api.github.com/users/${GITHUB_USERNAME}`,
+    { headers, next: { revalidate: 600 } }
+  );
   if (!userRes.ok) throw new Error(`GitHub API error: ${userRes.status}`);
   const userData = await userRes.json();
 
-  const reposRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`, { headers, next: { revalidate: 600 } });
-  const reposData: Array<{ language: string | null; stargazers_count: number; forks_count: number; fork: boolean; size: number }> = reposRes.ok ? await reposRes.json() : [];
+  const reposRes = await fetch(
+    `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`,
+    { headers, next: { revalidate: 600 } }
+  );
+  const reposData: Array<{
+    language: string | null;
+    stargazers_count: number;
+    forks_count: number;
+    fork: boolean;
+    size: number;
+    name: string;
+    description: string | null;
+    html_url: string;
+    updated_at: string;
+  }> = reposRes.ok ? await reposRes.json() : [];
+
+  const nonForkRepos = reposData.filter((r) => !r.fork);
 
   const languageBytes: Record<string, number> = {};
   let totalStars = 0;
   let totalForks = 0;
 
-  reposData.filter((r) => !r.fork).forEach((repo) => {
+  nonForkRepos.forEach((repo) => {
     totalStars += repo.stargazers_count;
     totalForks += repo.forks_count;
-    if (repo.language) languageBytes[repo.language] = (languageBytes[repo.language] || 0) + repo.size;
+    if (repo.language)
+      languageBytes[repo.language] =
+        (languageBytes[repo.language] || 0) + repo.size;
   });
 
   const totalBytes = Object.values(languageBytes).reduce((a, b) => a + b, 0);
   const languages = Object.entries(languageBytes)
     .sort(([, a], [, b]) => b - a)
-    .map(([name, bytes]) => ({ name, percentage: totalBytes > 0 ? Math.round((bytes / totalBytes) * 100) : 0, bytes }));
+    .map(([name, bytes]) => ({
+      name,
+      percentage: totalBytes > 0 ? Math.round((bytes / totalBytes) * 100) : 0,
+      bytes,
+    }));
 
-  const eventsRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/events?per_page=100`, { headers, next: { revalidate: 600 } });
+  // Top repos sorted by stars (recently updated first as tiebreaker)
+  const topRepos = nonForkRepos
+    .sort(
+      (a, b) =>
+        b.stargazers_count - a.stargazers_count ||
+        new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+    )
+    .slice(0, 6)
+    .map((r) => ({
+      name: r.name,
+      description: r.description,
+      html_url: r.html_url,
+      stargazers_count: r.stargazers_count,
+      forks_count: r.forks_count,
+      language: r.language,
+      updated_at: r.updated_at,
+    }));
+
+  const eventsRes = await fetch(
+    `https://api.github.com/users/${GITHUB_USERNAME}/events?per_page=100`,
+    { headers, next: { revalidate: 600 } }
+  );
   const eventsData = eventsRes.ok ? await eventsRes.json() : [];
 
   const commitHours: number[] = new Array(24).fill(0);
   eventsData.forEach((event: { created_at?: string; type: string }) => {
-    if (event.created_at && (event.type === "PushEvent" || event.type === "CreateEvent")) {
+    if (
+      event.created_at &&
+      (event.type === "PushEvent" || event.type === "CreateEvent")
+    ) {
       const date = new Date(event.created_at);
       const istHour = (date.getUTCHours() + 5.5) % 24;
       commitHours[Math.floor(istHour) % 24]++;
@@ -62,6 +115,7 @@ async function fetchGitHubStats() {
     },
     languages,
     commitHours,
+    topRepos,
     eventCount: eventsData.length,
   };
 
@@ -75,6 +129,9 @@ export async function GET() {
     return NextResponse.json(stats);
   } catch (error) {
     console.error("GitHub stats fetch error:", error);
-    return NextResponse.json({ error: "Failed to fetch GitHub stats" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch GitHub stats" },
+      { status: 500 }
+    );
   }
 }
