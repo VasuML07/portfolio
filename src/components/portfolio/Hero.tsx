@@ -18,13 +18,7 @@ export default function Hero() {
       <div className="noise absolute inset-0" />
 
       {/* Gradient orb */}
-      <div
-        className="gradient-orb pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[700px] rounded-full opacity-60"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, rgba(255,255,255,0.03) 0%, transparent 70%)",
-        }}
-      />
+      <div className="gradient-orb pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[700px] rounded-full opacity-60" />
 
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-3xl px-6 pt-24 text-center">

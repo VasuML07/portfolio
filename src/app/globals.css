@@ -61,14 +61,14 @@
   --popover-foreground: #09090b;
   --primary: #09090b;
   --primary-foreground: #fafafa;
-  --secondary: #f4f4f5;
+  --secondary: #f0f0f1;
   --secondary-foreground: #09090b;
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
+  --muted: #f0f0f1;
+  --muted-foreground: #52525b;
   --accent: #e4e4e7;
   --accent-foreground: #09090b;
   --destructive: #dc2626;
-  --border: rgba(0, 0, 0, 0.08);
+  --border: rgba(0, 0, 0, 0.12);
   --input: rgba(0, 0, 0, 0.06);
   --ring: rgba(0, 0, 0, 0.12);
 }
@@ -93,6 +93,7 @@ html {
   background: rgba(0, 0, 0, 0.12);
 }
 
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 4px;
 }
@@ -106,6 +107,12 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.14);
 }
+.light ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+}
+.light ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
 
 /* Dot grid background */
 .dot-grid {
@@ -113,7 +120,7 @@ html {
   background-size: 40px 40px;
 }
 .light .dot-grid {
-  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
 }
 
 /* Gradient orb animation */
@@ -124,6 +131,10 @@ html {
 }
 .gradient-orb {
   animation: orb-float 20s ease-in-out infinite;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.03) 0%, transparent 70%);
+}
+.light .gradient-orb {
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.03) 0%, transparent 70%);
 }
 
 /* Subtle noise texture overlay */
@@ -141,5 +152,5 @@ html {
   background-size: 256px 256px;
 }
 .light .noise::after {
-  opacity: 0.015;
+  opacity: 0.02;
 }
